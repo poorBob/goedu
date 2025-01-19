@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug messagesApp",
+        "type": "go",
+        "request": "launch",
+        "mode": "debug",
+        "program": "${workspaceFolder}/messagesApp",
+        "env": {
+          
+        },
+        "args": []
+      },
+      {
+        "name": "Debug ddosSimulator",
+        "type": "go",
+        "request": "launch",
+        "mode": "debug",
+        "program": "${workspaceFolder}/ddosSimulator",
+        "env": {
+          
+        },
+        "args": []
+      }
+    ]
+  }
+  

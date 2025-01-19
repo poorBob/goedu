@@ -1,0 +1,257 @@
+definitions:
+  echo.HTTPError:
+    properties:
+      message: {}
+    type: object
+  models.Address:
+    properties:
+      city:
+        type: string
+      climbing_gym_id:
+        type: integer
+      country:
+        type: string
+      id:
+        type: integer
+      postal_code:
+        type: string
+      street:
+        type: string
+    type: object
+  models.AddressCreate:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      postal_code:
+        type: string
+      street:
+        type: string
+    type: object
+  models.ClimbingGym:
+    properties:
+      address:
+        $ref: '#/definitions/models.Address'
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.ClimbingGymCreate:
+    properties:
+      address:
+        $ref: '#/definitions/models.AddressCreate'
+      email:
+        type: string
+      name:
+        type: string
+    type: object
+  models.ClimbingShoe:
+    properties:
+      brand:
+        type: string
+      id:
+        type: integer
+      model:
+        type: string
+      size:
+        type: integer
+    type: object
+  models.ClimbingShoeCreate:
+    properties:
+      brand:
+        type: string
+      model:
+        type: string
+      size:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /climbing-gyms:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all climbing gyms
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ClimbingGym'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get all climbing gyms
+      tags:
+      - gyms
+    post:
+      consumes:
+      - application/json
+      description: Adds a new climbing gym to the database.
+      parameters:
+      - description: Gym creation payload
+        in: body
+        name: gym
+        required: true
+        schema:
+          $ref: '#/definitions/models.ClimbingGymCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.ClimbingGym'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Add a new climbing gym
+      tags:
+      - gyms
+  /climbing-gyms/{city}:
+    get:
+      consumes:
+      - application/json
+      description: Fetches a list of climbing gyms located in the specified city.
+      parameters:
+      - description: City name
+        in: path
+        name: city
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ClimbingGym'
+            type: array
+        "404":
+          description: No gyms found in this city
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get climbing gyms by city
+      tags:
+      - gyms
+  /climbing-gyms/{id}:
+    delete:
+      description: Deletes a climbing gym record based on the provided ID.
+      parameters:
+      - description: Climbing Gym ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Delete a climbing gym by ID
+      tags:
+      - gyms
+    get:
+      consumes:
+      - application/json
+      description: Fetches a climbing gym record based on the provided ID.
+      parameters:
+      - description: Climbing Gym ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ClimbingGym'
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get a climbing gym by ID
+      tags:
+      - gyms
+  /climbing-shoes:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all climbing shoes in the database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ClimbingShoe'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get all climbing shoes
+      tags:
+      - shoes
+    post:
+      consumes:
+      - application/json
+      description: Adds a new climbing shoe to the database.
+      parameters:
+      - description: Shoe creation payload
+        in: body
+        name: shoe
+        required: true
+        schema:
+          $ref: '#/definitions/models.ClimbingShoeCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.ClimbingShoe'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Add a new climbing shoe
+      tags:
+      - shoes
+swagger: "2.0"
